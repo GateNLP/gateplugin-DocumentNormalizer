@@ -21,6 +21,7 @@ import gate.util.InvalidOffsetException;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class DocumentNormalizer extends AbstractLanguageAnalyser {
 
   private static final long serialVersionUID = -6780562970645480555L;
 
-  private transient List<Replacement> replacements = new ArrayList<Replacement>();
+  private List<Replacement> replacements = new ArrayList<Replacement>();
 
   private URL listURL;
 
@@ -126,8 +127,11 @@ public class DocumentNormalizer extends AbstractLanguageAnalyser {
     }
   }
 
-  private static class Replacement {
-    protected Pattern from;
+  private static class Replacement implements Serializable {
+
+	private static final long serialVersionUID = 4547916942406108790L;
+
+	protected Pattern from;
 
     protected String to;
 
