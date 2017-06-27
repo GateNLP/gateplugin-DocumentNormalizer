@@ -34,7 +34,7 @@ public class DocumentNormalizer extends AbstractLanguageAnalyser {
 
   private static final long serialVersionUID = -6780562970645480555L;
 
-  private List<Replacement> replacements = new ArrayList<Replacement>();
+  private transient List<Replacement> replacements = new ArrayList<Replacement>();
 
   private URL listURL;
 
@@ -44,7 +44,7 @@ public class DocumentNormalizer extends AbstractLanguageAnalyser {
     comment = "the file controlling the replacements to be made")
   public void setReplacementsURL(URL listURL) {
     this.listURL = listURL;
-  }
+  }	
 
   public URL getReplacementsURL() {
     return listURL;
@@ -70,10 +70,10 @@ public class DocumentNormalizer extends AbstractLanguageAnalyser {
 
     replacements.clear();
 
-    try {
-      BufferedReader in =
-              new BufferedReader(new InputStreamReader(listURL.openStream(),
-                      encoding));
+    try (BufferedReader in =
+            new BufferedReader(new InputStreamReader(listURL.openStream(),
+                    encoding))){
+      
       String from = in.readLine();
       while(from != null) {
         String to = in.readLine();
@@ -85,7 +85,10 @@ public class DocumentNormalizer extends AbstractLanguageAnalyser {
 
         from = in.readLine();
       }
-    } catch(Exception e) {
+    } catch (RuntimeException e) {
+    	throw new ResourceInstantiationException(e);
+    }
+    catch(Exception e) {
       throw new ResourceInstantiationException(e);
     }
 
