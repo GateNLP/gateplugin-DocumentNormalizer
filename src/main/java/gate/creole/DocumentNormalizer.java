@@ -22,6 +22,7 @@ import gate.util.InvalidOffsetException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,17 +38,26 @@ public class DocumentNormalizer extends AbstractLanguageAnalyser {
 
   private List<Replacement> replacements = new ArrayList<Replacement>();
 
-  private URL listURL;
+  private ResourceReference listURL;
 
   private String encoding;
 
   @CreoleParameter(defaultValue = "resources/replacements.lst",
     comment = "the file controlling the replacements to be made")
-  public void setReplacementsURL(URL listURL) {
+  public void setReplacementsURL(ResourceReference listURL) {
     this.listURL = listURL;
-  }	
+  }
+  
+  @Deprecated
+  public void setReplacementsURL(URL listURL) {
+    try {
+      this.setReplacementsURL(new ResourceReference(listURL));
+    } catch(URISyntaxException e) {
+      throw new RuntimeException("Error converting URL to ResourceReference",e);
+    }
+  }
 
-  public URL getReplacementsURL() {
+  public ResourceReference getReplacementsURL() {
     return listURL;
   }
 
