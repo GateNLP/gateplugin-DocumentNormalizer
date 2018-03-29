@@ -16,6 +16,9 @@
 	<groupId>uk.ac.gate.plugins</groupId>
 	<artifactId>document-normalizer</artifactId>
 	<version>8.5-SNAPSHOT</version>
+	
+	<name>Document Normalizer</name>
+	<description>Tools for normalizing documents before processing</description>
 
 	<licenses>
 		<license>
